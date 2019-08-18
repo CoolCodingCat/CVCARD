@@ -5,16 +5,17 @@ import { useGesture } from 'react-use-gesture'
 import './styles.css'
 
 const cards = [
-  'https://imgshare.io/images/2019/08/18/dispoV3.png',
-  'https://imgshare.io/images/2019/08/18/LinkedINV3.png',
-  'https://imgshare.io/images/2019/08/18/gitV3.png',
-  'https://imgshare.io/images/2019/08/18/SQLV3.png',
-  'https://imgshare.io/images/2019/08/18/bootstrapV3.png',
-  'https://imgshare.io/images/2019/08/18/ReactV3.png',
-  'https://imgshare.io/images/2019/08/18/PHPV3.png',
-  'https://imgshare.io/images/2019/08/18/JSV3.png',
-  'https://imgshare.io/images/2019/08/18/HTMLV3.png',
-  'https://imgshare.io/images/2019/08/18/prezV3.png'
+  'https://cl.ly/a7c871f41f09/job.jpg',
+  'https://cl.ly/e28f34d1d918/linkedin.jpg',
+  'https://cl.ly/05486bcb1baa/anglais.jpg',
+  'https://cl.ly/a5edee553b6a/git.jpg',
+  'https://cl.ly/2199d2d5e02b/mysql.jpg',
+  'https://cl.ly/e9985f850afb/bootstrap.jpg',
+  'https://cl.ly/1e63dd294b9f/php.jpg',
+  'https://cl.ly/8b37763e6367/react.jpg',
+  'https://cl.ly/549715876863/javascript.jpg',
+  'https://cl.ly/21f53e0911c7/HTML.png',
+  'https://cl.ly/d4379c36583f/LK.jpg'
 ]
 
 // These two are just helpers, they curate spring data, values that are later being interpolated into css
@@ -28,13 +29,13 @@ function Deck() {
   const [props, set] = useSprings(cards.length, i => ({ ...to(i), from: from(i) })) // Create a bunch of springs using the helpers above
   // Create a gesture, we're interested in down-state, delta (current-pos - click-pos), direction and velocity
   const bind = useGesture(({ args: [index], down, delta: [xDelta], distance, direction: [xDir], velocity }) => {
-    const trigger = velocity > 0.2 // If you flick hard enough it should trigger the card to fly out
+    const trigger = velocity > 0.05 // If you flick hard enough it should trigger the card to fly out
     const dir = xDir < 0 ? -1 : 1 // Direction should either point left or right
     if (!down && trigger) gone.add(index) // If button/finger's up and trigger velocity is reached, we flag the card ready to fly out
     set(i => {
       if (index !== i) return // We're only interested in changing spring-data for the current spring
       const isGone = gone.has(index)
-      const x = isGone ? (200 + window.innerWidth) * dir : down ? xDelta : 0 // When a card is gone it flys out left or right, otherwise goes back to zero
+      const x = isGone ? (100 + window.innerWidth) * dir : down ? xDelta : 0 // When a card is gone it flys out left or right, otherwise goes back to zero
       const rot = xDelta / 100 + (isGone ? dir * 10 * velocity : 0) // How much the card tilts, flicking it harder makes it rotate faster
       const scale = down ? 1.1 : 1 // Active cards lift up a bit
       return { x, rot, scale, delay: undefined, config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 } }
