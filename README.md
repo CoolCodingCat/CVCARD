@@ -1,2 +1,0 @@
-# CVCARD
-Created with CodeSandbox
